@@ -54,3 +54,59 @@ ORDER BY entries.title;
 UPDATE entries
 	SET content='Back is back', date='2024-06-17', id_author=(SELECT id_author FROM authors WHERE email='alvaru@thebridgeschool.es'), category='Software'
 	WHERE title='Estamos de Lunes de Back';
+
+
+----Ejercicios-----
+
+-- No insertar entries repetidas por título
+ALTER TABLE entries
+ADD CONSTRAINT unique_title UNIQUE (title);
+
+--ALL ENTRIES--
+SELECT * FROM entries
+
+--POR EMAIL--
+ SELECT e.title,e.content,e.category,a.name, a.surname,a.email, a.image
+    FROM entries AS e
+	INNER JOIN authors AS a
+    ON e.id_author=a.id_author
+    WHERE a.email= $1 --aqui poner un email para probar en pgadmin (es el dato a introducir)
+    ORDER BY e.title
+
+--BUSCAR POR TÍTULO PARA MODIFICAR ENTRY--
+UPDATE entries
+SET
+title = 'Nuevo título',
+content = 'Nuevo contenido',
+category = 'Nueva categoría'
+WHERE title='Noticia: SOL en Madrid';
+
+--BORRAR UNA TABLA POR TITULO--
+DELETE FROM entries
+WHERE title='Nuevo título';
+
+--OBJETO CON DATOS DE TODOS LOS AUTORES--
+SELECT *
+FROM authors;
+
+--RETORNAR AUTOR BUSCANDO POR EMAIL--
+SELECT *
+FROM authors
+WHERE email='birja@thebridgeschool.es';
+
+--CREAR UN NUEVO AUTOR EN TABLA AUTHOR--
+INSERT INTO authors (name, surname, email, image)
+VALUES ('Lucía', 'Aroca', 'lucia@thebridgeschool', 'maria.jpg');
+
+--EDITAR DATOS AUTOR--
+UPDATE authors
+SET
+name = 'Nuevo nombre',
+surname = 'Nuevo surname',
+email = 'Nuevo email',
+image = 'Nueva image'
+WHERE email='lucia@thebridgeschool'
+
+--BORRAR UN AUTOR--
+DELETE FROM authors
+WHERE email = 'Nuevo email';
